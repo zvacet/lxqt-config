@@ -1,23 +1,25 @@
 project(lxqt-config-monitor)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 include_directories (
     "${CMAKE_CURRENT_BINARY_DIR}"
     ${LXQT_INCLUDE_DIRS}
 )
+
+find_package(KF5Screen REQUIRED)
 
 set(H_FILES
     main.h
     monitorsettingsdialog.h
     monitor.h
     monitorwidget.h
-    xrandr.h
     monitorpicture.h
 )
 
 set(CPP_FILES
     main.cpp
     monitorsettingsdialog.cpp
-    xrandr.cpp
     monitor.cpp
     monitorwidget.cpp
     timeoutdialog.cpp
@@ -64,6 +66,7 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::X11Extras
+    KF5::Screen
     ${LXQT_LIBRARIES}
 )
 

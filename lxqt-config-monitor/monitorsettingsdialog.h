@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-
 #ifndef MONITORSETTINGSDIALOG_H
 #define MONITORSETTINGSDIALOG_H
 
 #include <QDialog>
+#include <KScreen/GetConfigOperation>
 #include "ui_mainwindow.h"
 #include "monitor.h"
-#include "monitorwidget.h"
+
 
 class TimeoutDialog;
 class QTimer;
@@ -33,40 +33,30 @@ class MonitorSettingsDialog: public QDialog {
   Q_OBJECT
 
 public:
-  MonitorSettingsDialog(MonitorSettingsBackend* backend);
+  MonitorSettingsDialog();
   virtual ~MonitorSettingsDialog();
   virtual void accept();
 
 private:
   void setMonitorsConfig();
   void setupUi();
-  QList<MonitorSettings*> getMonitorsSettings();
 
   void deleteTimeoutData(); // Used to delete data from TimeoutDialog
 
 private Q_SLOTS:
+    void configReceived(KScreen::ConfigOperation *op);
+
   // Timeout dialog signals
   void onCancelSettings();
 
-  // quick options
-  void onUseBoth();
-  void onExternalOnly();
-  void onLaptopOnly();
-  void onExtended();
-
   void onDialogButtonClicked(QAbstractButton* button);
-  void onPositionButtonClicked();
-  void disablePositionOption(bool disable);
 
 private:
   Ui::MonitorSettingsDialog ui;
-  QList<MonitorWidget*> monitors;
-  MonitorWidget* LVDS;
-  MonitorSettingsBackend* backend;
+  KScreen::ConfigPtr mConfig;
   // TimeoutDialog data
   TimeoutDialog* timeoutDialog;
   QTimer* timer;
-  QList<MonitorInfo*> timeoutSettings;
 };
 
 #endif // MONITORSETTINGSDIALOG_H

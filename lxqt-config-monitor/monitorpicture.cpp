@@ -35,7 +35,7 @@ void MonitorPictureDialog::updateMonitorWidgets(QString primaryMonitor) {
   int x0, y0;
   x0 = y0 =0;
   Q_FOREACH(MonitorPicture * picture, pictures) {
-    if( picture->monitorWidget->monitorInfo->name == primaryMonitor || primaryMonitor=="") {
+    if( picture->monitorWidget->output->name() == primaryMonitor || primaryMonitor=="") {
       x0 = picture->monitorWidget->ui.xPosSpinBox->value() + picture->pos().x();
       y0 = picture->monitorWidget->ui.yPosSpinBox->value() + picture->pos().y();
       break;
@@ -63,17 +63,17 @@ MonitorPicture::MonitorPicture(QGraphicsItem * parent, MonitorWidget *monitorWid
   originX = x;
   originY = y;
   setPen(QPen(Qt::black, 20));
-  textItem = new QGraphicsTextItem(monitorWidget->monitorInfo->name, this);
+  textItem = new QGraphicsTextItem(monitorWidget->output->name(), this);
   textItem->setX(x);
   textItem->setY(y);
   textItem->setParentItem(this);
-  
+
   adjustNameSize();
 }
 
 
 void MonitorPicture::adjustNameSize() {
-  qreal fontWidth = QFontMetrics(textItem->font()).width(monitorWidget->monitorInfo->name+"  "); 
+  qreal fontWidth = QFontMetrics(textItem->font()).width(monitorWidget->output->name() + "  ");
   textItem->setScale((qreal)this->rect().width()/fontWidth);
 }
 
@@ -105,7 +105,7 @@ void MonitorPicture::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 //////////////////////////////////////////////////////////////////////////////////
 // Move picture to nearest picture procedure.
-// Read magnetic_attraction.html for more info about the algorithm used. 
+// Read magnetic_attraction.html for more info about the algorithm used.
 //////////////////////////////////////////////////////////////////////////////////
 
 struct Parameters {
@@ -198,14 +198,14 @@ static Result_moveMonitorPictureToNearest compareTwoMonitors(MonitorPicture* mon
   if(params.t1>=0.0 && params.t1<=1.0 && params.t2>=0.0 && params.t2<=1.0) {
     if(t2<0) {t2 = params.t1; P2 = params.cutPoint;}
   }
-  
+
   if(t1>t2) { //Monitor outside
     result.vector = P1-P2;
     result.ok = false;
   } else {
     result.ok = true;
   }
-  
+
   return result;
 }
 

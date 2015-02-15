@@ -32,14 +32,6 @@ QSize sizeFromString(QString str) {
   return QSize(width, height);
 }
 
-bool MonitorSettingsBackend::isUnified(const QList< MonitorInfo* > monitors) {
-  Q_FOREACH(MonitorInfo * monitor, monitors) {
-    if(monitor->position != MonitorSettings::None)
-      return false;
-  }
-  return true;
-}
-
 MonitorSettings::MonitorSettings(QObject* parent): QObject(parent) {
   position = None;
   primaryOk = false;

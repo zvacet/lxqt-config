@@ -16,17 +16,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-
 #include "main.h"
 #include <LXQt/SingleApplication>
 #include "monitorsettingsdialog.h"
-#include "xrandr.h"
+
 
 int main(int argc, char** argv) {
     LxQt::SingleApplication app(argc, argv);
 
-    XRandRBackend *xrandr = new XRandRBackend();
-    MonitorSettingsDialog dlg(xrandr);
+    MonitorSettingsDialog dlg;
     app.setActivationWindow(&dlg);
     dlg.setWindowIcon(QIcon::fromTheme("preferences-desktop-display"));
     dlg.show();
